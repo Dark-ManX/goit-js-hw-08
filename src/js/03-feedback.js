@@ -88,5 +88,3 @@ export default {
     setEmailInput,
     setTextArea,
 }
-
-// 
