@@ -12,15 +12,13 @@ const refs = {
     textArea: document.querySelector('textarea'),
 }
 
-refs.form.addEventListener('submit', onSubmitClick);
-refs.emailInput.addEventListener('input', throttle(onEmailInput, 500));
-refs.textArea.addEventListener('input', throttle(onTextArea, 500));
-
-setEmailInput();
-setTextArea();
-
+const formListener = refs.form.addEventListener('submit', onSubmitClick);
+const emailInputListener = refs.emailInput.addEventListener('input', throttle(onEmailInput, 500));
+const textAreaListener = refs.textArea.addEventListener('input', throttle(onTextArea, 500));
 
 function onEmailInput(e) {
+
+    setEmailInput();
 
     const { name, value } = e.target;
 
@@ -31,6 +29,8 @@ function onEmailInput(e) {
 
 function onTextArea(ev) {
 
+    setTextArea();
+    
     const { name, value } = ev.target;
 
     obj[name] = value;
@@ -81,6 +81,9 @@ function setTextArea() {
 
 export default {
     refs,
+    // formListener,
+    // emailInputListener,
+    // textAreaListener,
     onEmailInput,
     onTextArea,
     onSubmitClick,
