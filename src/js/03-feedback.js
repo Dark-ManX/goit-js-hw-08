@@ -77,13 +77,13 @@ function setTextArea() {
         refs.textArea.value = JSON.parse(localStorage.getItem(KEY)).message;
     }
 };
-// const formRefListener = refs.form.addEventListener('submit', onSubmitClick);
+
 
 export default {
     refs,
     onEmailInput,
-    setEmailInput,
     onTextArea,
     onSubmitClick,
-    
+    setEmailInput,
+    setTextArea,
 }
