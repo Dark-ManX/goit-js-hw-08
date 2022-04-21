@@ -1,40 +1,50 @@
 import throttle from 'lodash.throttle';
 
-console.log(JSON.parse(localStorage.getItem(['feedback-form-state'])));
+console.log(localStorage);
+
+const KEY = 'feedback-form-state';
 
 const obj = {};
 
-const formRef = document.querySelector('.feedback-form');
-console.log(localStorage['feedback-form-state']);
-
-const checkStorage = ({elements: {email, message}}) => {
-    if (!localStorage.getItem(['feedback-form-state'])) {
-    
-        return;
-    }
-
-    email = JSON.parse(localStorage.getItem(['feedback-form-state'])).email;
-    message = JSON.parse(localStorage.getItem(['feedback-form-state'])).message;
+const refs = {
+    form: document.querySelector('.feedback-form'),
+    emailInput: document.querySelector('input'),
+    textArea: document.querySelector('textarea'),
 }
 
-const onSubmitClick = (evt) => {
+refs.form.addEventListener('submit', onSubmitClick);
+refs.emailInput.addEventListener('input', throttle(onEmailInput, 500));
+refs.textArea.addEventListener('input', throttle(onTextArea, 500));
+
+setEmailInput();
+setTextArea();
+
+
+function onEmailInput(e) {
+
+    const { name, value } = e.target;
+
+    obj[name] = value;
+
+    localStorage.setItem(KEY, JSON.stringify(obj));
+}
+
+function onTextArea(ev) {
+
+    const { name, value } = ev.target;
+
+    obj[name] = value;
+
+    localStorage.setItem(KEY, JSON.stringify(obj));
+}
+
+function onSubmitClick(evt) {
     evt.preventDefault();
-    
-    localStorage.clear();
 
-    const {
-        elements: {
-            email, message
-        }
-    } = evt.currentTarget;
-
-    if (email.value === '' || message.value === '') {
+    if (refs.emailInput.value === '' || refs.textArea.value === '') {
         
         return alert('заполните поля уважаемый');
     }
-
-        obj[email.name] = email.value;
-        obj[message.name] = message.value;
 
     try {
         const data = JSON.stringify(obj);
@@ -44,18 +54,36 @@ const onSubmitClick = (evt) => {
         console.log(error.message);
     }
 
-    return localStorage.setItem(['feedback-form-state'], JSON.stringify(obj)); 
+    refs.form.reset();
+    localStorage.removeItem(KEY);
+    localStorage.setItem(KEY, JSON.stringify(obj)); 
 }
 
-const throttledOnSubmitClick = throttle(onSubmitClick, 500);
+function setEmailInput() {
+    
+    const emailText = localStorage.getItem(KEY);
 
+    if (emailText) {
+        
+        refs.emailInput.value = JSON.parse(emailText).email;
+        console.log(refs.emailInput.value);
+    }
+};
 
-const formRefListener = formRef.addEventListener('submit', throttledOnSubmitClick);
+function setTextArea() {
+
+    if (localStorage.getItem(KEY)) {
+
+        refs.textArea.value = JSON.parse(localStorage.getItem(KEY)).message;
+    }
+};
+// const formRefListener = refs.form.addEventListener('submit', onSubmitClick);
 
 export default {
-    formRef,
-    checkStorage,
+    refs,
+    onEmailInput,
+    setEmailInput,
+    onTextArea,
     onSubmitClick,
-    throttledOnSubmitClick,
-    formRefListener,
+    
 }
