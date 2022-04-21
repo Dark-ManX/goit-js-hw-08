@@ -62,19 +62,21 @@ function setEmailInput() {
     
     const emailText = localStorage.getItem(KEY);
 
-    if (emailText) {
+    if (emailText.includes('message')) {
         
-        refs.emailInput.value = JSON.parse(emailText).email;
-        console.log(refs.emailInput.value);
+        return refs.emailInput.value = JSON.parse(emailText).email;
     }
+
+    return refs.emailInput.value = '';
 };
 
 function setTextArea() {
 
-    if (localStorage.getItem(KEY)) {
+    if (localStorage.getItem(KEY).includes('message')) {
 
-        refs.textArea.value = JSON.parse(localStorage.getItem(KEY)).message;
+        return refs.textArea.value = JSON.parse(localStorage.getItem(KEY)).message;
     }
+    return refs.textArea.value = '';
 };
 
 
