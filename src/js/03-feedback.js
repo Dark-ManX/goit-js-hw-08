@@ -80,9 +80,9 @@ function setTextArea() {
 
 export default {
     refs,
-    // formListener,
-    // emailInputListener,
-    // textAreaListener,
+    formListener,
+    emailInputListener,
+    textAreaListener,
     setMail,
     setMessage,
     onEmailInput,
