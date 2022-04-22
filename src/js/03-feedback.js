@@ -16,8 +16,8 @@ refs.form.addEventListener('submit', onSubmitClick);
 refs.emailInput.addEventListener('input', throttle(onEmailInput, 500));
 refs.textArea.addEventListener('input', throttle(onTextArea, 500));
 
-const setMail = setEmailInput();
-const setMessage = setTextArea();
+setEmailInput();
+setTextArea();
 
 function onEmailInput(e) {
 
