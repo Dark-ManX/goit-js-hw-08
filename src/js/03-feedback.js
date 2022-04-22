@@ -62,7 +62,7 @@ function setEmailInput() {
     
     const emailText = localStorage.getItem(KEY);
 
-    if (emailText.includes('message')) {
+    if (emailText.includes('email')) {
         
         return refs.emailInput.value = JSON.parse(emailText).email;
     }
