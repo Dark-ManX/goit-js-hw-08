@@ -3,7 +3,7 @@ import throttle from 'lodash.throttle';
 console.log(localStorage);
 
 const KEY = 'feedback-form-state';
-
+    
 const obj = {};
 
 const refs = {
@@ -12,39 +12,30 @@ const refs = {
     textArea: document.querySelector('textarea'),
 }
 
+const formText = refs.form.elements;
+
 refs.form.addEventListener('submit', onSubmitClick);
-refs.emailInput.addEventListener('input', throttle(onEmailInput, 500));
-refs.textArea.addEventListener('input', throttle(onTextArea, 500));
+refs.form.addEventListener('input', throttle(setFormFields, 500));
 
-setEmailInput();
-setTextArea();
+onLoadValue();
 
-function onEmailInput(e) {
 
-    const { name, value } = e.target;
+function onLoadValue() {
 
-    obj[name] = value;
+    const getField = localStorage.getItem(KEY);
 
-    localStorage.setItem(KEY, JSON.stringify(obj));
+    if (getField) {
+
+        formText.email.value = JSON.parse(getField).email;
+        formText.message.value = JSON.parse(getField).message;
+    } 
 }
 
-function onTextArea(ev) {
-
-    const { name, value } = ev.target;
-
-    obj[name] = value;
-
-    localStorage.setItem(KEY, JSON.stringify(obj));
-}
-
-function onSubmitClick(evt) {
-    evt.preventDefault();
-
-    if (refs.emailInput.value === '' || refs.textArea.value === '') {
-        
-        return alert('заполните поля уважаемый');
-    }
-
+function setFormFields(e) {
+   
+    obj[formText.email.name] = formText.email.value;
+    obj[formText.message.name] = formText.message.value;
+    
     try {
         const data = JSON.stringify(obj);
 
@@ -53,41 +44,29 @@ function onSubmitClick(evt) {
         console.log(error.message);
     }
 
-    refs.form.reset();
-    localStorage.removeItem(KEY);
     localStorage.setItem(KEY, JSON.stringify(obj)); 
 }
 
-function setEmailInput() {
-    
-    const emailText = localStorage.getItem(KEY);
+function onSubmitClick(evt) {
+    evt.preventDefault();    
 
-    if (emailText.includes('email')) {
+    if (formText.email.value === '' || formText.message.value === '') {
         
-        return refs.emailInput.value = JSON.parse(emailText).email;
+        alert('заполните поля уважаемый');
     }
-
-    return refs.emailInput.value = '';
-};
-
-function setTextArea() {
-
-    if (localStorage.getItem(KEY).includes('message')) {
-
-        return refs.textArea.value = JSON.parse(localStorage.getItem(KEY)).message;
-    }
-    return refs.textArea.value = '';
-};
-
+    
+    refs.form.reset();
+    localStorage.clear();
+    localStorage.setItem(KEY, JSON.stringify(obj));
+    
+    
+    
+}
 
 export default {
     refs,
-    setMail,
-    setMessage,
-    onEmailInput,
-    onTextArea,
+    onLoadValue,
+    setFormFields,
     onSubmitClick,
-    setEmailInput,
-    setTextArea,
 }
 //
