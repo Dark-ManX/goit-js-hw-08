@@ -19,7 +19,6 @@ refs.form.addEventListener('input', throttle(setFormFields, 500));
 
 onLoadValue();
 
-
 function onLoadValue() {
 
     const getField = localStorage.getItem(KEY);
@@ -31,7 +30,7 @@ function onLoadValue() {
     } 
 }
 
-function setFormFields(e) {
+function setFormFields() {
    
     obj[formText.email.name] = formText.email.value;
     obj[formText.message.name] = formText.message.value;
@@ -58,9 +57,6 @@ function onSubmitClick(evt) {
     refs.form.reset();
     localStorage.clear();
     localStorage.setItem(KEY, JSON.stringify(obj));
-    
-    
-    
 }
 
 export default {
