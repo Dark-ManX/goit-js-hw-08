@@ -23,7 +23,7 @@ function onLoadValue() {
 
     const getField = localStorage.getItem(KEY);
 
-    if (getField) {
+    if (getField && getField !== '') {
 
         formText.email.value = JSON.parse(getField).email;
         formText.message.value = JSON.parse(getField).message;
@@ -51,11 +51,11 @@ function onSubmitClick(evt) {
 
     if (formText.email.value === '' || formText.message.value === '') {
         
-        alert('заполните поля уважаемый');
+        return alert('заполните поля уважаемый');
     }
     
     refs.form.reset();
-    localStorage.clear();
+    localStorage.removeItem(KEY);
     localStorage.setItem(KEY, JSON.stringify(obj));
 }
 
